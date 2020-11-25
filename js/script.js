@@ -4,8 +4,6 @@
     // Set the date we're counting down to
     var countDownDate = new Date("2020-11-28").getTime();
 
-    console.log("countDownDate1:" + countDownDate);
-
     // Get today's date and time
     var now = new Date().getTime();
 
