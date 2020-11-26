@@ -10,8 +10,7 @@ A tiny WordPress plugin which displays a fixed notification bar at the top of th
 [https://www.web357.com](https://www.web357.com)
 
 ## DOWNLOAD WORDPRESS PLUGIN
-[Download](https://github.com/Yiannistaos/black-friday-countdown-timer-notification-bar-wordpress-plugin/archive/main.zip)
-
+[Download](https://github.com/Yiannistaos/black-friday-countdown-timer-notification-bar-wordpress-plugin/archive/v1.1.0.zip)
 
 ## SETTINGS
 ![Screenshot](https://www.web357.com/wp-content/uploads/screenshot-localhost-2020.11.26-14_30_18.png "Screenshot")
