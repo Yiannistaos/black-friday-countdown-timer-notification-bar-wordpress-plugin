@@ -1,12 +1,7 @@
-body {
-    padding-top: 90px !important;
-}
 .blackfriday-html-toolbar {
-    position: fixed;
-    left: 0;
-    top: 0;
+    position: relative;
     width: 100%;
-    z-index: 999999;
+    z-index: 999;
     font-family: inherit;
 }
 .blackfriday-html-toolbar-inner {
@@ -29,14 +24,12 @@ body {
     margin: 0;
     padding: 0;
 }
-
 @media print {
     .blackfriday-html-toolbar,
     .blackfriday-html-toolbar * {
         display: none !important;
     }
 }
-
 .blackfriday-buynow-btn,
 .blackfriday-buynow-btn:hover {
     background: rgb(189 214 120 / 74%);
@@ -51,7 +44,6 @@ body {
     font-size: 18px;
     font-weight: 700;
 }
-.blackfriday-buynow-btn:hover,
 .blackfriday-buynow-btn:active {
     background: rgb(189 214 120 / 55%);
     box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
@@ -59,7 +51,6 @@ body {
 .blackfriday-txt {
     font-weight: 700;
 }
-
 .blackfriday-countdown-timer {
     display: inline-block; 
     margin-right: 15px;
@@ -86,6 +77,8 @@ body {
 .blackfriday-countdown-timer-outer {
     display: inline-block;
     vertical-align: middle;
+    min-height: 64px;
+    min-width: 275px;
 }
 .blackfriday-text-outer {
     text-align: left;
@@ -106,10 +99,10 @@ body {
    border-bottom: 1px dotted #fbc460;
    color: #fbc460;
 }
+.blackfriday-hide-coupon-line {
+    display: none;
+}
 @media only screen and (max-width: 700px) {
-    body {
-        padding-top: 160px !important;
-    }
     .blackfriday-countdown-timer-outer {
         display: block;
         text-align: center;
@@ -117,9 +110,6 @@ body {
     }
 }
 @media only screen and (max-width: 600px) {
-    body {
-        padding-top: 220px !important;
-    }
     .blackfriday-countdown-timer-outer,
     .blackfriday-text-outer, 
     .blackfriday-btn-outers {
@@ -131,3 +121,23 @@ body {
         text-align: center;
     }
 }
+/* BEGIN: FIXED TOOLBAR */
+/*body {
+    padding-top: 90px !important;
+}
+.blackfriday-html-toolbar {
+    position: fixed;
+    left: 0;
+    top: 0;
+}
+@media only screen and (max-width: 700px) {
+    body {
+        padding-top: 160px !important;
+    }
+}
+@media only screen and (max-width: 600px) {
+    body {
+        padding-top: 220px !important;
+    }
+}*/
+/* END: FIXED TOOLBAR */
