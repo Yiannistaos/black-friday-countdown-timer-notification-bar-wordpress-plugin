@@ -1,17 +1,12 @@
-
-(function () {
-
+(function(){
     var distance = bf_pass_args.bf_diff_time;
     var endText  = bf_pass_args.bf_end_text;
 
     // If the count down is finished, write some text
-    if (distance < 0) {
-        bfCancelCounter(x);
-    }
-    else
-    {
+    if (distance < 0) {bfCancelCounter(x);}
+    else {
         // Update the count down every 1 second
-        var x = setInterval(function () {
+        var x = setInterval(function(){
 
             // Time calculations for days, hours, minutes and seconds
             var days    = Math.floor(distance / (60 * 60 * 24));
@@ -29,24 +24,21 @@
             // Display the result in the element with id="blackfriday-countdown-timer"
             var html = '<div class="blackfriday-countdown-timer">';
             html += '<div class="blackfriday-countdown-days">' + days + '<div class="txt">Days</div></div>';
-            html += '<div class="blackfriday-countdown-days">' + hours + '<div class="txt">Hours</div></div>';
-            html += '<div class="blackfriday-countdown-days">' + minutes + '<div class="txt">Minutes</div></div>';
-            html += '<div class="blackfriday-countdown-days">' + seconds + '<div class="txt">Seconds</div></div>';
+            html += '<div class="blackfriday-countdown-hours">' + hours + '<div class="txt">Hours</div></div>';
+            html += '<div class="blackfriday-countdown-minutes">' + minutes + '<div class="txt">Minutes</div></div>';
+            html += '<div class="blackfriday-countdown-seconds">' + seconds + '<div class="txt">Seconds</div></div>';
             html += '</div>';
 
             document.getElementById("blackfriday-countdown-timer").innerHTML = html;
 
             // If the count down is finished, write some text
-            if (distance < 0) {
-                bfCancelCounter(x);
-            }
+            if (distance < 0) {bfCancelCounter(x);}
         }, 1000);
 
     }
 
-    function bfCancelCounter(timeoutHandle) {
+    function bfCancelCounter(timeoutHandle){
         clearInterval(timeoutHandle);
         document.getElementById("blackfriday-html-toolbar-content").innerHTML = endText;
     }
-
 })();

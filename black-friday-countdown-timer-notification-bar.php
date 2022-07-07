@@ -3,7 +3,7 @@
  * Plugin Name:       Black Friday Countdown Timer Notification Bar
  * Plugin URI:        https://github.com/Yiannistaos/black-friday-countdown-timer-notification-bar-wordpress-plugin
  * Description:       A tiny WordPress plugin which displays a fixed notification bar at the top of the page with a countdown timer and a message about a special offer e.g. Black Friday.
- * Version:           1.1.0
+ * Version:           1.1.1
  * Author:            Yiannis Christodoulou (web357), Thodoris Gkitsos (theogk)
  * Author URI:        https://www.web357.com/
  * License:           GPL-2.0+
@@ -16,7 +16,8 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-define( 'BF_COUNTDOWN_VERSION', '1.1.0' );
+define( 'BF_COUNTDOWN_VERSION', '1.1.1' );
+define( 'BF_COUNTDOWN_BASE_FILE', 'black-friday-countdown-timer-notification-bar/black-friday-countdown-timer-notification-bar.php' );
 
 // Register CSS and JS files
 add_action('init', 'w357_register_script');
@@ -43,19 +44,17 @@ function w357_enqueue_style(){
 }
 
 add_action('admin_enqueue_scripts', 'w357_admin_enqueue_scripts');
-function w357_admin_enqueue_scripts(){
-    if( empty( get_option('bf_countdown_enabled') ) ) return;
+function w357_admin_enqueue_scripts( $hook ) {
 
-    // load jQuery
-    wp_enqueue_script( 'jquery' );
+    if ( 'settings_page_bf-countdown-settings' !== $hook ) return;
 
     // datetime picker
-    wp_enqueue_script( 'jquery-ui-datetimepicker', wp_register_script('jquery-ui-datetimepicker', '//cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js' ));
+    wp_enqueue_script( 'jquery-ui-datetimepicker', 'https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js', [ 'jquery' ], BF_COUNTDOWN_VERSION, true );
 
-    wp_enqueue_style( 'jquery-ui-datetimepicker', wp_register_style('jquery-ui-datetimepicker', '//cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css' ));
+    wp_enqueue_style( 'jquery-ui-datetimepicker', 'https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css', [], BF_COUNTDOWN_VERSION );
 
     // custom script for backend
-    wp_enqueue_script( 'black-friday-countdown-timer-notification-bar-admin', wp_register_script( 'black-friday-countdown-timer-notification-bar-admin', plugins_url('/js/script.admin.js', __FILE__), false, BF_COUNTDOWN_VERSION, true ) );
+    wp_enqueue_script( 'black-friday-countdown-timer-notification-bar-admin', plugins_url('/js/script.admin.js', __FILE__), [ 'jquery', 'jquery-ui-datetimepicker' ], BF_COUNTDOWN_VERSION, true );
 }
 
 function bf_return_time_distance_in_seconds() {
@@ -65,13 +64,13 @@ function bf_return_time_distance_in_seconds() {
 function bf_get_time_from_settings() {
     //just get black friday 2020 for now
 
-    $end_datetime = !empty( get_option( 'bf_end_datetime' ) ) ? esc_attr( get_option( 'bf_end_datetime' ) ) : '2020-11-27 23:59:59';
+    $end_datetime = !empty( get_option( 'bf_end_datetime' ) ) ? esc_attr( get_option( 'bf_end_datetime' ) ) : '2022-12-31 23:59:59';
 
     return $end_datetime; // '2020-11-27 23:59:59'
 }
 
 function bf_get_end_text() {
-    return !empty( get_option( 'bf_countdown_end_text' ) ) ? wp_kses_post( get_option( 'bf_countdown_end_text' ) ) : 'The Black Friday 2020 has passed. Thank you! :)';
+    return !empty( get_option( 'bf_countdown_end_text' ) ) ? wp_kses_post( get_option( 'bf_countdown_end_text' ) ) : 'The Black Friday 2022 has passed. Thank you! :)';
 }
 
 // The HTML Code
@@ -379,11 +378,25 @@ function bf_countdown_enabled_callback() {
     echo '<input type="checkbox" id="bf_countdown_enabled" name="bf_countdown_enabled" value="1" ' . $checked . ' />';
 }
 
+
 /**
- * Deletes from database all plugin options on deactivation
+ * Add Settings link in plugin page.
+ *
+ * @param   array $actions The actions array.
+ * @param   string $plugin_file Path to the plugin file relative to the plugins directory.
+ * @return  array The actions array.
+ * @since   1.0.0
  */
-register_deactivation_hook( __FILE__, 'bf_delete_plugin_options' );
-function bf_delete_plugin_options() {
-    global $wpdb;
-    $wpdb->query( "DELETE FROM {$wpdb->options} WHERE option_name LIKE 'bf_countdown_%'" );
+add_filter( 'plugin_action_links', 'bf_countdown_plugin_action_links', 10, 2 );
+function bf_countdown_plugin_action_links( $actions, $plugin_file ) {
+
+	$this_plugin = BF_COUNTDOWN_BASE_FILE;
+
+	if ( $plugin_file == $this_plugin ) {
+
+		$settings_link = '<a href="' . admin_url( 'options-general.php?page=bf-countdown-settings' ) . '">Settings</a>';
+		array_unshift( $actions, $settings_link );
+	}
+
+	return $actions;
 }
